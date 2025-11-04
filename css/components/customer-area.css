@@ -1,0 +1,206 @@
+/* css/components/customer-area.css */
+.customer-area {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1001;
+}
+
+.customer-area.hidden {
+    display: none;
+}
+
+.customer-area-content {
+    background: white;
+    width: 90%;
+    max-width: 800px;
+    height: 90%;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.customer-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid #e5e5e5;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.customer-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+}
+
+.close-customer-area {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.customer-tabs {
+    display: flex;
+    border-bottom: 1px solid #e5e5e5;
+    padding: 0 1.5rem;
+}
+
+.customer-tab {
+    padding: 1rem 1.5rem;
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s;
+}
+
+.customer-tab.active {
+    border-bottom-color: #000;
+    font-weight: bold;
+}
+
+.customer-tab-content {
+    flex: 1;
+    padding: 1.5rem;
+    overflow-y: auto;
+    display: none;
+}
+
+.customer-tab-content.active {
+    display: block;
+}
+
+/* Estilos para lista de pedidos */
+.orders-list {
+    space-y-4;
+}
+
+.order-card {
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.order-id {
+    font-weight: bold;
+    color: #000;
+}
+
+.order-status {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: bold;
+}
+
+.status-pending { background: #fef3c7; color: #92400e; }
+.status-confirmed { background: #d1fae5; color: #065f46; }
+.status-shipped { background: #dbeafe; color: #1e40af; }
+.status-delivered { background: #dcfce7; color: #166534; }
+.status-cancelled { background: #fee2e2; color: #991b1b; }
+
+.order-tracking {
+    background: #f8fafc;
+    padding: 0.75rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+}
+
+.tracking-code {
+    font-family: monospace;
+    font-weight: bold;
+    color: #000;
+}
+
+.order-products {
+    space-y-2;
+}
+
+.order-product {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.order-total {
+    text-align: right;
+    font-weight: bold;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 2px solid #e5e5e5;
+}
+
+/* Formulário de perfil */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* Notificações */
+.notifications-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.notification-item {
+    padding: 1rem;
+    border-left: 4px solid #000;
+    background: #f8fafc;
+    margin-bottom: 0.5rem;
+    border-radius: 4px;
+}
+
+.notification-item.unread {
+    background: #fff;
+    border-left-color: #3b82f6;
+}
+
+.notification-item.read {
+    background: #f1f5f9;
+    border-left-color: #94a3b8;
+}
+
+.notification-title {
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+}
+
+.notification-date {
+    font-size: 0.875rem;
+    color: #64748b;
+}
+
+.customer-footer {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid #e5e5e5;
+    text-align: center;
+}
+
+.btn-logout {
+    background: #ef4444;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+}

@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Adicionar no head do index.html -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Romanos Store">
+    <link rel="apple-touch-icon" href=" img/logo.jpeg">
+
+    <!-- Adicionar antes do fechamento do body -->
+    <script type="module" src="./js/pwa-notifications.js"></script>
+    <script type="module" src="sw.js"></script>
+
+    <!-- SDK do Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <title>Romanos Store - Sua Loja de Roupas Online</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>    
+    <!-- SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- CSS Personalizado -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components/header.css">
+    <link rel="stylesheet" href="css/components/products.css">
+    <link rel="stylesheet" href="css/components/auth-modal.css">
+    <link rel="stylesheet" href="css/components/cart.css">
+    
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-black rounded-full flex items-center justify-center text-white font-bold mr-2">R</div>
+                    <h1 class="text-xl font-bold">Romanos Store</h1>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#" class="text-gray-700 hover:text-black font-medium">Início</a>
+                    <a href="#" class="text-gray-700 hover:text-black font-medium">Masculino</a>
+                    <a href="#" class="text-gray-700 hover:text-black font-medium">Feminino</a>
+                    <a href="#" class="text-gray-700 hover:text-black font-medium">Novidades</a>
+                    <a href="#" class="text-gray-700 hover:text-black font-medium">Ofertas</a>
+                </nav>
+                
+                <!-- Icons -->
+                <div class="flex items-center space-x-6">
+                    <div class="relative">
+                        <button id="cart-button" class="text-gray-700 hover:text-black">
+                            <i class="fas fa-shopping-cart text-xl"></i>
+                            <span id="cart-count" class="cart-badge hidden">0</span>
+                        </button>
+                    </div>
+
+                    <button class="text-gray-700 hover:text-black">
+                        <i class="fas fa-user text-xl"></i>
+                    </button>
+                    
+                 
+                    
+                    <button class="md:hidden text-gray-700 hover:text-black" id="mobile-menu-button">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mobile Navigation -->
+            <div id="mobile-menu" class="hidden md:hidden py-4 border-t">
+                <div class="flex flex-col space-y-4">
+                    <a href="#" class="text-gray-700 hover:text-black font-medium">Início</a>
+                    <a href="#" class="text-gray-700 hover:text-black font-medium">Masculino</a>
+                    <a href="#" class="text-gray-700 hover:text-black font-medium">Feminino</a>
+                    <a href="#" class="text-gray-700 hover:text-black font-medium">Novidades</a>
+                    <a href="#" class="text-gray-700 hover:text-black font-medium">Ofertas</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-bg text-white py-20 md:py-32">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-4xl md:text-6xl font-bold mb-4">MODA SOFISTICADA</h2>
+            <p class="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">Há mais de 25 anos vestindo você com estilo e elegância</p>
+            <button class="bg-white text-black px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition duration-300">
+                EXPLORAR COLEÇÃO
+            </button>
+        </div>
+    </section>
+
+    <!-- Seção Principal de Produtos -->
+    <section class="py-8 bg-white">
+        <div class="container mx-auto px-4">
+            <!-- Breadcrumb -->
+            <div class="mb-6 text-sm text-gray-600">
+                <a href="#" class="hover:text-black">Home</a>
+                <span class="mx-2">/</span>
+                <a href="#" class="hover:text-black">Produtos</a>
+                <span class="mx-2">/</span>
+                <span class="text-black">Todos os produtos</span>
+            </div>
+
+            <div class="flex flex-col lg:flex-row gap-8">
+                <!-- Filtros Laterais - Desktop -->
+                <div class="hidden lg:block lg:w-1/4">
+                    <div class="sticky top-24 space-y-6">
+                        <!-- Categorias -->
+                        <div class="filter-section">
+                            <h3 class="filter-title">Categorias</h3>
+                            <div class="category-filters space-y-2">
+                                <label class="filter-option">
+                                    <input type="radio" name="category" value="all" checked class="category-filter">
+                                    <span>Todos os produtos</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="radio" name="category" value="masculino" class="category-filter">
+                                    <span>Masculino</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="radio" name="category" value="feminino" class="category-filter">
+                                    <span>Feminino</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="radio" name="category" value="infantil" class="category-filter">
+                                    <span>Infantil</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="radio" name="category" value="acessorios" class="category-filter">
+                                    <span>Acessórios</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Promoções -->
+                        <div class="filter-section">
+                            <h3 class="filter-title">Promoções</h3>
+                            <div class="space-y-2">
+                                <label class="filter-option">
+                                    <input type="checkbox" class="promotion-filter" value="all" checked>
+                                    <span>Todos</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" class="promotion-filter" value="sale">
+                                    <span>Somente promoção</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Estoque -->
+                        <div class="filter-section">
+                            <h3 class="filter-title">Estoque</h3>
+                            <div class="space-y-2">
+                                <label class="filter-option">
+                                    <input type="checkbox" class="stock-filter" value="all" checked>
+                                    <span>Todos</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" class="stock-filter" value="in_stock">
+                                    <span>Em estoque</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" class="stock-filter" value="low_stock">
+                                    <span>Estoque baixo</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" class="stock-filter" value="out_of_stock">
+                                    <span>Sem estoque</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Preço -->
+                        <div class="filter-section">
+                            <h3 class="filter-title">Faixa de Preço</h3>
+                            <div class="price-range">
+                                <input type="number" id="min-price" class="form-input" placeholder="Mínimo" step="0.01" min="0">
+                                <span class="price-separator">-</span>
+                                <input type="number" id="max-price" class="form-input" placeholder="Máximo" step="0.01" min="0">
+                            </div>
+                        </div>
+
+                        <!-- Ações -->
+                        <div class="filter-actions">
+                            <button id="clear-filters" class="btn btn-secondary w-full">
+                                <i class="fas fa-times"></i> Limpar Filtros
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Produtos -->
+                <div class="lg:w-3/4">
+                    <!-- Header com Botão Filtros Mobile -->
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
+                        <div class="mb-4 sm:mb-0">
+                            <h2 class="text-2xl font-bold">PRODUTOS</h2>
+                            <p id="products-count" class="text-gray-600">Carregando...</p>
+                        </div>
+                        
+                        <div class="flex items-center gap-4">
+                            <!-- Botão Filtros Mobile -->
+                            <button id="mobile-filters-toggle" class="lg:hidden bg-black text-white px-4 py-2 rounded-lg font-semibold hover:bg-gray-800 transition duration-300 flex items-center gap-2">
+                                <i class="fas fa-filter"></i>
+                                Filtros
+                            </button>
+                            
+                            <div class="flex items-center">
+                                <span class="text-gray-600 mr-2 hidden sm:block">Ordenar por:</span>
+                                <select id="sort-select" class="form-select">
+                                    <option value="default">Padrão</option>
+                                    <option value="name_asc">Nome (A-Z)</option>
+                                    <option value="name_desc">Nome (Z-A)</option>
+                                    <option value="price_asc">Menor preço</option>
+                                    <option value="price_desc">Maior preço</option>
+                                    <option value="stock_asc">Menor estoque</option>
+                                    <option value="stock_desc">Maior estoque</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Grid de Produtos -->
+                    <div id="products-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Carregado dinamicamente -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="py-16 bg-black text-white">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold mb-4">ASSINE NOSSA NEWSLETTER</h2>
+            <p class="text-gray-300 mb-8 max-w-2xl mx-auto">Receba ofertas exclusivas e novidades da nossa coleção diretamente no seu e-mail.</p>
+            
+            <div class="max-w-md mx-auto flex">
+                <input type="email" placeholder="Seu e-mail" class="flex-grow px-4 py-3 rounded-l-lg text-black focus:outline-none">
+                <button class="bg-white text-black px-6 py-3 rounded-r-lg font-semibold hover:bg-gray-200 transition duration-300">
+                    ASSINAR
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-black font-bold mr-2">R</div>
+                        <h3 class="text-xl font-bold">Romanos Store</h3>
+                    </div>
+                    <p class="text-gray-400">Desde 2000</p>
+                    <p class="text-gray-400 mt-2">Há mais de 25 anos vestindo você com estilo</p>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">DEPARTAMENTOS</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Masculino</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Feminino</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Infantil</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Acessórios</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">SUPORTE</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Central de Ajuda</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Como Comprar</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Trocas e Devoluções</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Política de Privacidade</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">ENTRE EM CONTATO</h4>
+                    <ul class="space-y-2">
+                        <li class="text-gray-400"><i class="fas fa-phone mr-2"></i> +55 92 98513-0951</li>
+                        <li class="text-gray-400"><i class="fas fa-envelope mr-2"></i> dombusiness092@gmail.com</li>
+                        <li class="text-gray-400"><i class="fas fa-map-marker-alt mr-2"></i>  R. Fridolim Herthal Júnior, 97 - Itajaí - SC</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>Copyright © Romanos Store - 2025. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- auth-modal usuario. -->
+ <div id="auth-modal" class="auth-modal hidden">
+    <div class="auth-modal-content">
+        <span class="close-auth-modal">&times;</span>
+        
+        <!-- Abas Login/Cadastro -->
+        <div class="auth-tabs">
+            <button class="auth-tab active" data-tab="login">Login</button>
+            <button class="auth-tab" data-tab="signup">Cadastro</button>
+        </div>
+
+        <!-- Formulário de Login -->
+        <form id="login-form" class="auth-form active">
+            <input type="email" placeholder="E-mail" required>
+            <input type="password" placeholder="Senha" required>
+            <button type="submit">Entrar</button>
+            <p class="auth-switch">Não tem conta? <a href="#" class="switch-to-signup">Cadastre-se</a></p>
+        </form>
+
+        <!-- Formulário de Cadastro -->
+        <form id="signup-form" class="auth-form">
+            <input type="text" placeholder="Nome completo" required>
+            <input type="email" placeholder="E-mail" required>
+            <input type="password" placeholder="Senha" minlength="6" required>
+            <input type="tel" placeholder="Telefone">
+            <input type="text" placeholder="CEP" id="cep">
+            <input type="text" placeholder="Endereço" id="address">
+            <input type="text" placeholder="Número" id="number">
+            <input type="text" placeholder="Complemento" id="complement">
+            <input type="text" placeholder="Bairro" id="neighborhood">
+            <input type="text" placeholder="Cidade" id="city">
+            <input type="text" placeholder="Estado" id="state">
+            
+            <label class="newsletter-optin">
+                <input type="checkbox" checked> Receber newsletter e notificações de novos produtos
+            </label>
+            
+            <button type="submit">Cadastrar</button>
+            <p class="auth-switch">Já tem conta? <a href="#" class="switch-to-login">Fazer login</a></p>
+        </form>
+    </div>
+    </div>
+
+     <!-- Área do Cliente -->
+<div id="customer-area" class="customer-area hidden">
+    <div class="customer-area-content">
+        <div class="customer-header">
+            <h3><i class="fas fa-user-circle mr-2"></i>Minha Conta</h3>
+            <button class="close-customer-area">&times;</button>
+        </div>
+        
+        <div class="customer-tabs">
+            <button class="customer-tab active" data-tab="orders">Meus Pedidos</button>
+            <button class="customer-tab" data-tab="profile">Meus Dados</button>
+            <button class="customer-tab" data-tab="notifications">Notificações</button>
+        </div>
+
+        <!-- Aba de Pedidos -->
+        <div id="customer-orders" class="customer-tab-content active">
+            <div class="loading-orders">
+                <i class="fas fa-spinner fa-spin"></i> Carregando pedidos...
+            </div>
+            <div id="orders-list" class="orders-list"></div>
+        </div>
+
+        <!-- Aba de Perfil -->
+        <div id="customer-profile" class="customer-tab-content">
+            <form id="profile-form">
+                <div class="form-grid">
+                    <input type="text" name="name" placeholder="Nome completo" required>
+                    <input type="email" name="email" placeholder="E-mail" disabled>
+                    <input type="tel" name="phone" placeholder="Telefone">
+                    <input type="text" name="cep" placeholder="CEP" id="profile-cep">
+                </div>
+                
+                <input type="text" name="address" placeholder="Endereço" id="profile-address">
+                
+                <div class="form-grid">
+                    <input type="text" name="number" placeholder="Número">
+                    <input type="text" name="complement" placeholder="Complemento">
+                </div>
+                
+                <div class="form-grid">
+                    <input type="text" name="neighborhood" placeholder="Bairro" id="profile-neighborhood">
+                    <input type="text" name="city" placeholder="Cidade" id="profile-city">
+                    <input type="text" name="state" placeholder="Estado" id="profile-state">
+                </div>
+
+                <label class="newsletter-optin">
+                    <input type="checkbox" name="newsletter"> Receber newsletter e notificações
+                </label>
+
+                <button type="submit" class="btn-primary">
+                    <i class="fas fa-save"></i> Salvar Alterações
+                </button>
+            </form>
+        </div>
+
+        <!-- Aba de Notificações -->
+        <div id="customer-notifications" class="customer-tab-content">
+            <div class="notifications-header">
+                <h4>Minhas Notificações</h4>
+                <button id="mark-all-read" class="btn-secondary">Marcar todas como lidas</button>
+            </div>
+            <div id="notifications-list" class="notifications-list"></div>
+        </div>
+
+        <div class="customer-footer">
+            <button id="logout-button" class="btn-logout">
+                <i class="fas fa-sign-out-alt"></i> Sair
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Shopping Cart Sidebar -->
+<div id="cart-sidebar" class="cart-sidebar">
+    <div class="cart-content">
+        <div class="cart-header">
+            <h3 class="cart-title">Seu Carrinho</h3>
+            <button id="close-cart" class="cart-close">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        
+        <div id="cart-items" class="cart-items">
+            <div id="empty-cart-message" class="empty-cart">
+                <i class="fas fa-shopping-cart empty-cart-icon"></i>
+                <p>Seu carrinho está vazio</p>
+                <p class="text-sm text-gray-500">Adicione alguns produtos incríveis!</p>
+            </div>
+            <!-- Os itens do carrinho serão inseridos aqui dinamicamente -->
+        </div>
+        
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span class="total-label">Total:</span>
+                <span id="cart-total" class="total-value">R$ 0,00</span>
+            </div>
+            <button id="checkout-button" class="checkout-button">
+                <i class="fas fa-lock"></i>
+                FINALIZAR COMPRA
+            </button>
+        </div>
+    </div>
+</div>
+    <!-- Mobile Filters Sidebar -->
+    <div id="mobile-filters-sidebar" class="mobile-filters-sidebar">
+        <div class="mobile-filters-content">
+            <div class="mobile-filters-header">
+                <h3 class="mobile-filters-title">Filtros</h3>
+                <button id="close-mobile-filters" class="mobile-filters-close">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="mobile-filters-body">
+                <!-- Categorias -->
+                <div class="filter-section">
+                    <h3 class="filter-title">Categorias</h3>
+                    <div class="category-filters space-y-2">
+                        <label class="filter-option">
+                            <input type="radio" name="category-mobile" value="all" checked class="category-filter-mobile">
+                            <span>Todos os produtos</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="radio" name="category-mobile" value="masculino" class="category-filter-mobile">
+                            <span>Masculino</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="radio" name="category-mobile" value="feminino" class="category-filter-mobile">
+                            <span>Feminino</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="radio" name="category-mobile" value="infantil" class="category-filter-mobile">
+                            <span>Infantil</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="radio" name="category-mobile" value="acessorios" class="category-filter-mobile">
+                            <span>Acessórios</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Promoções -->
+                <div class="filter-section">
+                    <h3 class="filter-title">Promoções</h3>
+                    <div class="space-y-2">
+                        <label class="filter-option">
+                            <input type="checkbox" class="promotion-filter-mobile" value="all" checked>
+                            <span>Todos</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" class="promotion-filter-mobile" value="sale">
+                            <span>Somente promoção</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Estoque -->
+                <div class="filter-section">
+                    <h3 class="filter-title">Estoque</h3>
+                    <div class="space-y-2">
+                        <label class="filter-option">
+                            <input type="checkbox" class="stock-filter-mobile" value="all" checked>
+                            <span>Todos</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" class="stock-filter-mobile" value="in_stock">
+                            <span>Em estoque</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" class="stock-filter-mobile" value="low_stock">
+                            <span>Estoque baixo</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" class="stock-filter-mobile" value="out_of_stock">
+                            <span>Sem estoque</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Preço -->
+                <div class="filter-section">
+                    <h3 class="filter-title">Faixa de Preço</h3>
+                    <div class="price-range">
+                        <input type="number" id="min-price-mobile" class="form-input" placeholder="Mínimo" step="0.01" min="0">
+                        <span class="price-separator">-</span>
+                        <input type="number" id="max-price-mobile" class="form-input" placeholder="Máximo" step="0.01" min="0">
+                    </div>
+                </div>
+
+                <!-- Ações -->
+                <div class="filter-actions">
+                    <button id="clear-filters-mobile" class="btn btn-secondary w-full mb-4">
+                        <i class="fas fa-times"></i> Limpar Filtros
+                    </button>
+                    <button id="apply-filters-mobile" class="btn btn-primary w-full">
+                        <i class="fas fa-check"></i> Aplicar Filtros
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts CORRIGIDOS -->
+<script type="module" src="./js/supabase.js"></script>
+<script type="module" src="./js/utils/helpers.js"></script>
+<script type="module" src="./js/utils/validators.js"></script>
+<script type="module" src="./js/utils/errorHandler.js"></script>
+<script type="module" src="./js/products.js"></script>
+<script type="module" src="./js/cart.js"></script> 
+<script type="module" src="./js/shared/filter-system.js"></script>
+<script type="module" src="./js/filters.js"></script>
+<script type="module" src="./js/sync-system.js"></script>
+
+<script type="module" src="./js/pwa-notifications.js"></script>
+<script type="module" src="./js/main.js"></script>
+    <!-- Script de Mobile Filters -->
+    <script>
+        // Mobile Filters Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileFiltersToggle = document.getElementById('mobile-filters-toggle');
+            const mobileFiltersSidebar = document.getElementById('mobile-filters-sidebar');
+            const closeMobileFilters = document.getElementById('close-mobile-filters');
+            const applyFiltersMobile = document.getElementById('apply-filters-mobile');
+
+            // Abrir filtros mobile
+            if (mobileFiltersToggle) {
+                mobileFiltersToggle.addEventListener('click', function() {
+                    mobileFiltersSidebar.classList.add('open');
+                    document.body.style.overflow = 'hidden';
+                });
+            }
+
+            // Fechar filtros mobile
+            if (closeMobileFilters) {
+                closeMobileFilters.addEventListener('click', function() {
+                    mobileFiltersSidebar.classList.remove('open');
+                    document.body.style.overflow = 'auto';
+                });
+            }
+
+            // Aplicar filtros mobile
+            if (applyFiltersMobile) {
+                applyFiltersMobile.addEventListener('click', function() {
+                    // Sincroniza os filtros mobile com os filtros desktop
+                    syncMobileToDesktopFilters();
+                    
+                    // Fecha o sidebar
+                    mobileFiltersSidebar.classList.remove('open');
+                    document.body.style.overflow = 'auto';
+                    
+                    // Aplica os filtros
+                    if (window.filterSystem) {
+                        window.filterSystem.applyFilters();
+                    }
+                });
+            }
+
+            // Fechar ao clicar fora
+            if (mobileFiltersSidebar) {
+                mobileFiltersSidebar.addEventListener('click', function(e) {
+                    if (e.target === mobileFiltersSidebar) {
+                        mobileFiltersSidebar.classList.remove('open');
+                        document.body.style.overflow = 'auto';
+                    }
+                });
+            }
+
+            // Sincronizar filtros mobile com desktop
+            function syncMobileToDesktopFilters() {
+                // Categorias
+                const mobileCategory = document.querySelector('input[name="category-mobile"]:checked');
+                if (mobileCategory) {
+                    const desktopCategory = document.querySelector(`input[name="category"][value="${mobileCategory.value}"]`);
+                    if (desktopCategory) {
+                        desktopCategory.checked = true;
+                    }
+                }
+
+                // Promoções
+                const mobilePromo = document.querySelector('.promotion-filter-mobile[value="sale"]');
+                const desktopPromo = document.querySelector('.promotion-filter[value="sale"]');
+                if (mobilePromo && desktopPromo) {
+                    desktopPromo.checked = mobilePromo.checked;
+                }
+
+                // Estoque
+                const stockFilters = ['in_stock', 'low_stock', 'out_of_stock'];
+                stockFilters.forEach(filter => {
+                    const mobileStock = document.querySelector(`.stock-filter-mobile[value="${filter}"]`);
+                    const desktopStock = document.querySelector(`.stock-filter[value="${filter}"]`);
+                    if (mobileStock && desktopStock) {
+                        desktopStock.checked = mobileStock.checked;
+                    }
+                });
+
+                // Preço
+                const minPriceMobile = document.getElementById('min-price-mobile');
+                const maxPriceMobile = document.getElementById('max-price-mobile');
+                const minPriceDesktop = document.getElementById('min-price');
+                const maxPriceDesktop = document.getElementById('max-price');
+
+                if (minPriceMobile && minPriceDesktop) {
+                    minPriceDesktop.value = minPriceMobile.value;
+                }
+                if (maxPriceMobile && maxPriceDesktop) {
+                    maxPriceDesktop.value = maxPriceMobile.value;
+                }
+            }
+
+            // Sincronizar desktop para mobile (quando necessário)
+            function syncDesktopToMobileFilters() {
+                // Categorias
+                const desktopCategory = document.querySelector('input[name="category"]:checked');
+                if (desktopCategory) {
+                    const mobileCategory = document.querySelector(`input[name="category-mobile"][value="${desktopCategory.value}"]`);
+                    if (mobileCategory) {
+                        mobileCategory.checked = true;
+                    }
+                }
+
+                // Preço
+                const minPriceDesktop = document.getElementById('min-price');
+                const maxPriceDesktop = document.getElementById('max-price');
+                const minPriceMobile = document.getElementById('min-price-mobile');
+                const maxPriceMobile = document.getElementById('max-price-mobile');
+
+                if (minPriceDesktop && minPriceMobile) {
+                    minPriceMobile.value = minPriceDesktop.value;
+                }
+                if (maxPriceDesktop && maxPriceMobile) {
+                    maxPriceMobile.value = maxPriceDesktop.value;
+                }
+            }
+
+            // Inicializar sincronização
+            syncDesktopToMobileFilters();
+        });
+    </script>
+</body>
+</html>
