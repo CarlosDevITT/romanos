@@ -47,3 +47,41 @@ Para rodar este projeto, o banco de dados está estruturado com as seguintes tab
 * `base_conhecimento`: Banco de dados de perguntas e respostas automáticas para o chat.
 * `mensagens_chat`: Histórico de conversas do suporte em tempo real.
 
+## 📂 Estrutura de Pastas do Repositório
+
+```text
+fio-a-fio-store/
+│
+├── fio-a-fio-client-pwa/            # 📱 SISTEMA 1: Cliente & Catálogo (PWA)
+│   ├── css/
+│   │   └── style.css                # Estilização da interface (catálogo, carrinho, chat)
+│   ├── js/
+│   │   ├── supabase.js              # Inicialização do Supabase (Chaves públicas)
+│   │   ├── app.js                   # Gerenciador principal (navegação entre abas via SPA)
+│   │   └── modules/
+│   │       ├── inicio.js            # Lista produtos, filtros por categoria e busca
+│   │       ├── carrinho.js          # Controle da sacola, API ViaCEP e checkout
+│   │       ├── chat.js              # Realtime do Supabase + respostas automáticas
+│   │       └── perfil.js            # Cadastro do cliente e histórico de pedidos
+│   ├── icons/                       # Ícones do app para resoluções PWA
+│   ├── index.html                   # Página única do app (SPA por abas)
+│   ├── manifest.json                # Configurações de instalação do PWA
+│   └── sw.js                        # Service Worker (Estratégia de cache offline)
+│
+├── fio-a-fio-admin/                 # 🖥️ SISTEMA 2: Painel Administrativo & PDV
+│   ├── css/
+│   │   └── admin.css                # Estilos do painel, tabelas e PDV em 2 colunas
+│   ├── js/
+│   │   ├── supabase.js              # Inicialização do Supabase
+│   │   ├── main.js                  # Controlador de telas e sessão de login
+│   │   └── modules/
+│   │       ├── pdv.js               # Frente de Caixa (Venda rápida balcão)
+│   │       ├── dashboard.js         # Métricas de faturamento (Online vs. Balcão)
+│   │       ├── pedidos.js           # Gestão de status de pedidos recebidos online
+│   │       ├── produtos.js          # CRUD de produtos e controle de estoque
+│   │       ├── conhecimento.js      # FAQ do chat automatizado
+│   │       └── configuracoes.js     # Dados da loja e regras de negócio/frete
+│   ├── login.html                   # Tela de autenticação dos funcionários
+│   └── index.html                   # Menu e visualização principal do painel
+│
+└── README.md                        # Documentação do projeto
