@@ -1,0 +1,83 @@
+.desktop-nav {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .desktop-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-6);
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: var(--desktop-nav-h, 72px);
+    padding: 0 var(--sp-8);
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    z-index: 30;
+  }
+
+  .desktop-nav__brand {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: var(--fs-lg);
+    color: var(--color-primary);
+    flex-shrink: 0;
+  }
+
+  .desktop-nav__search {
+    flex: 1;
+    max-width: 480px;
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+    background: var(--color-bg);
+    border-radius: var(--radius-md);
+    padding: var(--sp-3) var(--sp-4);
+  }
+
+  .desktop-nav__search svg { width: 18px; height: 18px; color: var(--color-muted); flex-shrink: 0; }
+  .desktop-nav__search input { flex: 1; font-size: var(--fs-sm); background: transparent; }
+  .desktop-nav__search input::placeholder { color: var(--color-muted); }
+
+  .desktop-nav__links {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-6);
+    flex-shrink: 0;
+  }
+
+  .desktop-nav__link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    color: var(--color-ink-soft);
+    position: relative;
+  }
+
+  .desktop-nav__link svg { width: 20px; height: 20px; }
+
+  .desktop-nav__link.is-active { color: var(--color-primary); }
+
+  .desktop-nav__link .badge-count {
+    position: absolute;
+    top: -6px; right: -10px;
+    background: var(--color-danger);
+    color: #fff;
+    font-size: 9px;
+    font-weight: 700;
+    min-width: 15px;
+    height: 15px;
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Esconde a search-bar mobile e o header de ícones da home,
+     já cobertos pela navbar desktop. Headers com título (voltar) seguem visíveis. */
+  .search-bar { display: none; }
+  .dom-header--home { display: none; }
+}

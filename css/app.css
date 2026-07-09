@@ -1,0 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+@import '../config/theme.css';
+@import './base/reset.css';
+@import './layout/layout.css';
+@import './components/header.css';
+@import './components/bottom-nav.css';
+@import './components/desktop-nav.css';
+@import './components/product-card.css';
+@import './components/cart.css';
+@import './components/customer-area.css';
+@import './pages/store.css';

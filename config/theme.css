@@ -1,0 +1,55 @@
+:root {
+  /* Cores */
+  --color-primary: #F97316;
+  --color-primary-dark: #EA660A;
+  --color-primary-light: #FFE8D6;
+  --color-ink: #14141A;
+  --color-ink-soft: #4A4A55;
+  --color-muted: #9497A3;
+  --color-bg: #F5F5F8;
+  --color-surface: #FFFFFF;
+  --color-border: #ECECF1;
+  --color-danger: #E4483A;
+  --color-success: #1FA971;
+  --color-star: #FFB800;
+
+  /* Tipografia */
+  --font-display: 'Sora', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+
+  --fs-xs: 0.7rem;
+  --fs-sm: 0.8125rem;
+  --fs-base: 0.9375rem;
+  --fs-md: 1.0625rem;
+  --fs-lg: 1.375rem;
+  --fs-xl: 1.75rem;
+
+  /* Espaçamento */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+
+  /* Raio */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+  --radius-full: 999px;
+
+  /* Sombra */
+  --shadow-card: 0 6px 20px rgba(20, 20, 26, 0.06);
+  --shadow-float: 0 10px 30px rgba(249, 115, 22, 0.35);
+
+  /* Layout mobile-first */
+  --app-max-width: 430px;
+  --header-h: 56px;
+  --bottomnav-h: 78px;
+
+  /* Breakpoints (referência, usados via @media fixo nos arquivos) */
+  --bp-tablet: 768px;
+  --bp-desktop: 1024px;
+  --bp-wide: 1280px;
+}

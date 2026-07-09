@@ -1,0 +1,161 @@
+.product-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  padding: var(--sp-3);
+  box-shadow: var(--shadow-card);
+  position: relative;
+}
+
+.product-card__fav {
+  position: absolute;
+  top: var(--sp-3);
+  right: var(--sp-3);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--color-primary-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.product-card__fav svg { width: 14px; height: 14px; color: var(--color-primary); }
+.product-card__fav.is-active svg { color: var(--color-primary); fill: var(--color-primary); }
+
+.product-card__thumb {
+  height: 110px;
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 42px;
+  margin-bottom: var(--sp-3);
+}
+
+.product-card__name {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.product-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--sp-2);
+}
+
+.product-card__price {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--fs-base);
+}
+
+.product-card__colors {
+  display: flex;
+  gap: 4px;
+}
+
+.product-card__colors span {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-surface);
+  box-shadow: 0 0 0 1px var(--color-border);
+}
+
+/* Categoria (avatar redondo) */
+.category-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-2);
+  flex-shrink: 0;
+  width: 62px;
+}
+
+.category-item__icon {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: var(--color-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  box-shadow: var(--shadow-card);
+  border: 2px solid transparent;
+}
+
+.category-item.is-active .category-item__icon {
+  border-color: var(--color-primary);
+}
+
+.category-item span {
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  text-align: center;
+  color: var(--color-ink-soft);
+  line-height: 1.2;
+}
+
+/* Banner promocional */
+.promo-banner {
+  background: linear-gradient(135deg, #FFDDBF 0%, #FFEFDD 100%);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-5);
+  position: relative;
+  overflow: hidden;
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.promo-banner__emoji {
+  position: absolute;
+  right: var(--sp-3);
+  bottom: var(--sp-2);
+  font-size: 80px;
+  opacity: .9;
+  transform: rotate(-8deg);
+}
+
+.promo-banner h3 {
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  font-weight: 800;
+  line-height: 1.15;
+  max-width: 65%;
+}
+
+.promo-banner strong { color: var(--color-primary-dark); }
+
+.promo-banner .promo-cta {
+  margin-top: var(--sp-3);
+  background: var(--color-primary);
+  color: #fff;
+  font-weight: 700;
+  font-size: var(--fs-sm);
+  padding: var(--sp-2) var(--sp-4);
+  border-radius: var(--radius-full);
+  width: fit-content;
+}
+
+.promo-dots {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  margin-top: var(--sp-3);
+}
+
+.promo-dots span {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--color-border);
+}
+
+.promo-dots span.is-active {
+  width: 14px;
+  background: var(--color-primary);
+}
